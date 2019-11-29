@@ -4,19 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
     TextView textView;
-    Observable<Integer> observable;
+    Observable<Integer> observable,observable2;
     Observer<Integer> observer;
-    List<Integer> numbers;
 
 
 
@@ -31,27 +26,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void intiThings() {
-        numbers=new ArrayList<>();
-        numbers.add(11);
-        numbers.add(12);
-        numbers.add(13);
-        numbers.add(14);
-        numbers.add(15);
-        numbers.add(16);
-        observable = Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                for (Integer number : numbers) {
-                    if (!emitter.isDisposed()) {
-                        emitter.onNext(number);
-                    }
-                }
 
-                if (!emitter.isDisposed()) {
-                    emitter.onComplete();
-                }
-            }
-        });
+        observable = Observable.just(1,2,3)
+                .map(i -> i*i)
+                .map(i -> i*i)
+                .filter(i -> i>10);
+        observable2=Observable.range(2,100);
 
 
 
@@ -82,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
 
        observable.subscribe(observer);
+       observable2.subscribe(observer);
+
 
 
     }
